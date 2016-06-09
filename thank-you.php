@@ -1,1 +1,0 @@
-/*Send/Thank You Page*/
