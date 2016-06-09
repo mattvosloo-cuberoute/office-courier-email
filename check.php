@@ -18,10 +18,10 @@ $sql = "SELECT * FROM `oc_customer` WHERE `email` = '" . $email ."'";
 
 $result = $db->query($sql);
 
-$client_data = array();
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
+        $clientdata['id'] = $row['customer_id'];
         $clientdata['name'] = $row['firstname'] . ' ' . $row['lastname'];
         $clientdata['newsletter'] = $row['newsletter'];
     }
@@ -30,16 +30,36 @@ if ($result->num_rows > 0) {
     return;
 }
 
-$templateUrl = "template-" . $template . ".html";
+$sql = "SELECT * FROM `oc_order` WHERE `customer_id` = '" . $clientdata['id'] ."' AND order_status_id < 3";
+echo $sql;
 
-$tpl = file_get_contents($templateUrl);
-$tpl = str_replace('{{name}}', $clientdata['name'], $tpl);
-$tpl = str_replace('{{order}}', $clientdata['newsletter'], $tpl);
+$result = $db->query($sql);
 
-echo $tpl;
-
-//var_dump($clientdata);
+if ($result->num_rows > 0) {
+    // output data of each row
+    $i = 0;
+    while($row = $result->fetch_assoc()) {
+        //var_dump($row);
+        $order_data[$i]['order_id'] = $row['order_id'];
+        $order_data[$i]['total'] = $row['total'];
+        $order_data[$i]['telephone'] = $row['telephone'];
+        $i++;
+    }
+} else {
+    echo 'No Orders Found';
+    return;
+}
 
 $db->close();
+
+$order_tpl = "<form action='send.php' method='post' ><table class='order-list'><tr><td></td><td>Order ID</td><td>Telephone</td><td>Total</td><td>Select Order</td></tr>";
+foreach($order_data as $order) {
+    $order_tpl .= "<tr>";
+    $order_tpl .= "<td><input type='radio' name='id' value='".$order['order_id']."' /><input type='hidden' name='name' value='".$clientdata['name']."' /><input type='hidden' name='template' value='".$template."' /><input type='hidden' name='email' value='".$email."' /></td><td>".$order['order_id']."</td><td>".$order['telephone']."</td><td>R".$order['total']."</td>";
+    $order_tpl .= "</tr>";
+}
+$order_tpl .= "<tr><td colspan='4'></td><td><input type='submit' value='Send'></td></tr></form></table>";
+
+echo $order_tpl;
 
 ?>

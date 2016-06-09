@@ -14,7 +14,7 @@
             <h1>ePETstore Delivery Emailer</h1>
         </header>
         <content>
-            <form action="thank-you.php" method="post">
+            <form action="check.php" method="post">
                 <div class="input">
                     <input name="email" type="email" placeholder="Customer Email" />
                     <label for="email">Customer Email</label>
