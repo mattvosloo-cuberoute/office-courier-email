@@ -1,1 +1,34 @@
 /*Main CSS*/
+body {
+    width: 400px;
+    margin: 20px auto;
+    font-family: monospace;
+}
+header, 
+content {
+    border: 1px #eee solid;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 10px 0px;
+    display: block;
+    width: 100%;
+}
+input[type="text"], 
+select {
+    width: 200px;
+    height: 40px;
+    padding: 0px 10px;
+    margin: 2px;
+    font-family: monospace;
+}
+input[type="submit"] {
+    margin: 2px;
+    width: 200px;
+    height: 40px;
+    background: #eee;
+    border: 1px #999 solid;
+    font-family: monospace;
+}
+table.order_details {
+    margin: 20px 5px;
+}
